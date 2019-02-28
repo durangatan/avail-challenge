@@ -6,4 +6,3 @@ class ErrorController < ActionController::API
     end
 
 end
-  

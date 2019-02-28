@@ -7,27 +7,25 @@ end
 
 gem 'active_model_serializers'
 gem 'bcrypt'
-gem 'braintree', '~> 2.72.0'
-gem 'pg', '~> 0.18'
-gem 'puma', '~> 3.0'
+gem 'pg'
+gem 'puma'
 gem 'rack-cors'
-gem 'rails', '~> 5.0.1'
+gem 'rails'
 gem 'rubocop'
 gem 'simplecov', require: false, group: :test
 
 group :development, :test do
   gem 'byebug', platform: :mri
   gem 'database_cleaner'
-  gem 'factory_girl_rails'
   gem 'faker'
   gem 'rspec-rails'
   gem 'shoulda-matchers'
 end
 
 group :development do
-  gem 'listen', '~> 3.0.5'
+  gem 'listen'
   gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'spring-watcher-listen'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

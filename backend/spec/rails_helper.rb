@@ -35,8 +35,8 @@ RSpec.configure do |config|
   # examples within a transaction, remove the following line or assign false
   # instead of true.
   # [...]
-  # add `FactoryGirl` methods
-  config.include FactoryGirl::Syntax::Methods
+  # add `FactoryBot` methods
+  config.include FactoryBot::Syntax::Methods
 
   # start by truncating all the tables but then use the faster transaction strategy the rest of the time.
   config.before(:suite) do
