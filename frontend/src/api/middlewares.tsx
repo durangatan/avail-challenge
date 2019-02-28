@@ -1,9 +1,9 @@
-import { EbcFetchConfig } from './api';
+import { TenantFetchConfig } from './api';
 
-export const loggingMiddleware = ({ config, url }: EbcFetchConfig) => {
+export const loggingMiddleware = ({ config, url }: TenantFetchConfig) => {
 	if (process.env.NODE_ENV === 'development') {
 		console.log(
-			`EBC-API-${config ? config.method : 'GET'}:${url}`,
+			`Tenant-API-${config ? config.method : 'GET'}:${url}`,
 			config ? config.body : null
 		);
 	}

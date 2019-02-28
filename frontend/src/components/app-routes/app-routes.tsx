@@ -1,6 +1,6 @@
 import React, { useState, ReactNode } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { Home, Workout, Edit, Stats, Results } from '../screens';
+import { Home, Admin,Apply } from '../screens';
 import { Modal } from '../elements';
 export default function AppRoutes() {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
@@ -14,10 +14,8 @@ export default function AppRoutes() {
   return (
     <React.Fragment>
       <Switch>
-        <Route path="/workout" render={routeProps => <Workout {...routeProps} toggleModal={toggleModal} />} />
-        <Route path="/edit" component={Edit} />
-        <Route path="/stats" component={Stats} />
-        <Route path="/results" component={Results} />
+        <Route path="/apply/:id" render={routeProps => <Apply {...routeProps} toggleModal={toggleModal} />} />
+        <Route path="/admin" component={Admin} />
         <Route path="/" component={Home} />
       </Switch>
       <Modal isOpen={modalIsOpen}>{modalChildren}</Modal>

@@ -5,12 +5,12 @@ const METHODS = {
   POST: 'POST'
 };
 
-export type EbcFetchConfig = {
+export type TenantFetchConfig = {
   url: string;
   config?: RequestInit;
 };
 
-const ebcFetch = (config: EbcFetchConfig, middlewares = [loggingMiddleware]): Promise<Response> => {
+const tenantFetch = (config: TenantFetchConfig, middlewares = [loggingMiddleware]): Promise<Response> => {
   return middlewares
     .reduce((promiseChain, currentTask) => promiseChain.then(config => currentTask(config)), Promise.resolve(config))
     .then(config => {
@@ -18,22 +18,10 @@ const ebcFetch = (config: EbcFetchConfig, middlewares = [loggingMiddleware]): Pr
     });
 };
 
-const getJson = (url: string) => ebcFetch({ url }).then(res => res.json());
+const getJson = (url: string) => tenantFetch({ url }).then(res => res.json());
 
 const postJson = (url: string, body: any) =>
-  ebcFetch({
+  tenantFetch({
     url,
     config: { method: METHODS.POST, body: JSON.stringify(body), headers: { 'Content-Type': 'application/json' } }
   });
-
-export const getRoutine = (id: number): Promise<any> => getJson(`${API_URL}/routines/${id}`);
-
-export const getRoutines = (): Promise<Array<any>> => getJson(`${API_URL}/routines`);
-
-export const postRoutine = (routine: any): Promise<Response> => postJson(`${API_URL}/routines`, routine);
-
-export const getExercises = (): Promise<Array<any>> => getJson(`${API_URL}/exercises`);
-
-export const getWorkouts = (): Promise<Array<any>> => getJson(`${API_URL}/workouts`);
-
-export const postWorkout = (workout: any): Promise<Response> => postJson(`${API_URL}/workouts`, workout);

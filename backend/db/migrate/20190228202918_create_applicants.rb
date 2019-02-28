@@ -1,7 +1,8 @@
-class CreateTenants < ActiveRecord::Migration[5.2]
+class CreateApplicants < ActiveRecord::Migration[5.2]
   def change
-    create_table :tenants do |t|
-      t.integer :user_id
+    create_table :applicants do |t|
+      t.string :email
+      t.string :name
       t.integer :dob ,:limit => 8
       t.string :employment_status
       t.string :has_pets

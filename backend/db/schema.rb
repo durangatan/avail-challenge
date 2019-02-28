@@ -15,6 +15,26 @@ ActiveRecord::Schema.define(version: 2019_02_28_203440) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "admins", force: :cascade do |t|
+    t.string "email"
+    t.string "password_digest"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "applicants", force: :cascade do |t|
+    t.string "email"
+    t.string "name"
+    t.bigint "dob"
+    t.string "employment_status"
+    t.string "has_pets"
+    t.integer "landlord_id"
+    t.string "token"
+    t.boolean "submitted"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "application_properties", force: :cascade do |t|
     t.string "form_type"
     t.string "theme_color_hex"
@@ -25,33 +45,14 @@ ActiveRecord::Schema.define(version: 2019_02_28_203440) do
   create_table "landlords", force: :cascade do |t|
     t.string "name"
     t.string "email"
-    t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "tenant_secrets", force: :cascade do |t|
+  create_table "secrets", force: :cascade do |t|
     t.string "ssn"
     t.string "mmn"
-    t.integer "tenant_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "tenants", force: :cascade do |t|
-    t.integer "user_id"
-    t.bigint "dob"
-    t.string "employment_status"
-    t.string "has_pets"
-    t.integer "landlord_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "users", force: :cascade do |t|
-    t.string "email"
-    t.string "password_digest"
-    t.boolean "admin"
+    t.integer "applicant_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

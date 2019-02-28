@@ -1,20 +1,8 @@
 require 'faker'
 
-User.delete_all
-customer = User.create!(
-  email: 'test@mail.com',
-  password: 'secret',
-  braintree_customer_id: nil,
-  name: Faker::Name.name,
-  phone: Faker::PhoneNumber.phone_number,
-  verified_email: false
-)
-User.create!(
+Admin.delete_all
+Admin.create!(
   email: 'admin@mail.com',
-  password: 'secret',
-  braintree_customer_id: nil,
-  name: Faker::Name.name,
-  phone: Faker::PhoneNumber.phone_number,
-  verified_email: false,
-  admin: true
-)
+  password: 'secret')
+
+Applicant.create(name: "Joe", email: "joeduran8@gmail.com", secret: Secret.new(ssn:"foo", mmn:"wow"))
