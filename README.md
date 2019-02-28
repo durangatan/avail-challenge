@@ -29,3 +29,5 @@ We will first evaluate for functionality. Does it work? Is it pulling in data fr
 If you have any questions don’t hesitate to reach out. I’ll be available by email throughout the process.
 
 Good luck!
+
+https://trello.com/b/BgLcj4jn/avail-challenge
