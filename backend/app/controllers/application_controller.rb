@@ -2,14 +2,18 @@ class ApplicationController < ActionController::API
   include Response
   include ExceptionHandler
 
-  def authenticate_customer!
-    token = request.headers["Authorization"]
-    @customer = Customer.find_by(auth_token: token)
+  def authenticate_tenant!
+    token = request.params["token"]
+    @tenant = Tenant.find_by(token: token)
 
-    return json_response({}, :unauthorized) unless @customer
+    json_response({}, :unauthorized) unless @tenant and !@tenant.submitted
   end
 
   def admin_only!
-    return json_response({}, :unauthorized) unless @customer && @customer.admin
+    json_response({}, :unauthorized) unless @user && @user.admin
+  end
+
+  def properties
+    ApplicationProperty.first.to_json
   end
 end
