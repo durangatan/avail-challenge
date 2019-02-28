@@ -1,7 +1,7 @@
 *.gem
 Gemfile.lock
 *.log
-test/*/tmp
+**/*/tmp
 test/*/public/packs
 gemfiles/*.lock
 *.swp

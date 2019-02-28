@@ -1,3 +1,3 @@
 export { Home } from './home';
-export { Admin } from './Admin';
-export { Apply } from './Apply';
+export { Admin } from './admin';
+export { Apply } from './apply';
