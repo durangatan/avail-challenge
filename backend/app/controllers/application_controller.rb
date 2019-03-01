@@ -14,6 +14,6 @@ class ApplicationController < ActionController::API
   end
 
   def properties
-    ApplicationProperty.first.to_json
+    json_response(ApplicationProperty.first.to_json, :ok)
   end
 end

@@ -17,7 +17,7 @@ const Option = styled.option`
   text-align: center;
 `;
 
-type SelectOption = {
+export type SelectOption = {
   label: string;
   value: any;
 };
@@ -39,7 +39,9 @@ export default function Dropdown({ activeIndex, options, onChange, name }: Dropd
         onChange={onChange}
       >
         {options.map(option => (
-          <Option key={option.value} value={option.value}>{option.label}</Option>
+          <Option key={option.value} value={option.value}>
+            {option.label}
+          </Option>
         ))}
       </Select>
     </DropdownContainer>

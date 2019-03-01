@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 2019_02_28_203440) do
     t.string "name"
     t.bigint "dob"
     t.string "employment_status"
-    t.string "has_pets"
+    t.boolean "has_pets"
     t.integer "landlord_id"
     t.string "token"
     t.boolean "submitted"

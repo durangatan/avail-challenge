@@ -6,6 +6,7 @@ class Applicant < ApplicationRecord
 	validates :name, presence: true, uniqueness: true
 	validates :email, presence: true, uniqueness: true, format:{ with: /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i}
 	validates :employment_status, inclusion: { in: %w(Employed Unemployed),
+	allow_nil: true,
 	message: "%{value} is not a valid employment status" }
 
 	def generate_token
