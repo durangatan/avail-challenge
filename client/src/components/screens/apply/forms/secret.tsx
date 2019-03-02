@@ -1,5 +1,5 @@
 import React from 'react';
-import { Secret } from '../../../../models';
+import { SecretArguments } from '../../../../models';
 import { Input } from '../../../elements';
 import formatSSN from '../../../util/formatSSN';
 import { FormError } from '../../../elements/form';
@@ -9,7 +9,7 @@ export default function SecretFormQuestions({
   error,
   onChange
 }: {
-  secret: Secret;
+  secret: SecretArguments;
   error?: string;
   onChange: (e: any) => void;
 }) {

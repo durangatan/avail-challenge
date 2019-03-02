@@ -6,3 +6,4 @@ export { DragAndDropRegion } from './drag-and-drop-region';
 export { Input } from './input';
 export { Table } from './table';
 export { Checkbox } from './checkbox';
+export { Notification } from './notification';

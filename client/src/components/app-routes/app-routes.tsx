@@ -1,9 +1,8 @@
 import React, { useState, ReactNode, useEffect } from 'react';
-import { Route, Switch } from 'react-router-dom';
-import { Home, Admin as AdminScreen, Apply } from '../screens';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import { Home, Admin as AdminScreen, Apply, Success } from '../screens';
 import { Modal } from '../elements';
-import { Admin } from '../../models';
-import ApplicationProperties from '../../models/ApplicationProperties';
+import { Admin, ApplicationProperties } from '../../models';
 import { getApplicationProperties } from '../../api';
 
 import Cookie from 'js-cookie';
@@ -41,6 +40,18 @@ export default function AppRoutes() {
           render={routeProps => <Apply {...routeProps} toggleModal={toggleModal} formType={appProperties.formType} />}
         />
         <Route path="/admin" component={AdminScreen} />
+        <Route
+          path="/success"
+          render={routeProps =>
+            routeProps.location.state.message ? (
+              // if you got to the success route somehow without a message we'll redirect you home.
+              // No Unearned Success! 💪
+              <Success message={routeProps.location.state.message} />
+            ) : (
+              <Redirect to="/" />
+            )
+          }
+        />
         <Route
           path="/"
           render={routeProps =>

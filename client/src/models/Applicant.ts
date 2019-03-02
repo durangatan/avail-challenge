@@ -88,7 +88,7 @@ export class Applicant {
       landlord: this.landlord ? this.landlord.toJSON() : null,
       landlord_id: this.landlordId || null,
       secret: this.secret ? this.secret.toJSON() : null,
-      secretId: this.secretId || null,
+      secret_id: this.secretId || null,
       token: this.token || null,
       submitted: this.submitted
     };
@@ -102,11 +102,12 @@ export type ApplicantJSON = {
   dob: number | null;
   employment_status: EmploymentStatus | null;
   has_pets: boolean | null;
+  landlord: LandlordJSON | null;
   landlord_id: number | null;
   token: string | null;
   submitted: boolean | null;
-  landlord: LandlordJSON | null;
-  secret: SecretJSON;
+  secret: SecretJSON | null;
+  secret_id: number | null;
 };
 
 export type WithApplicantId = {

@@ -1,7 +1,11 @@
 import { loggingMiddleware } from './middlewares';
-import { Applicant, ApplicationProperties } from '../models';
-import { ApplicantJSON, ApplicantArguments } from '../models/Applicant';
-import { ApplicationPropertiesJSON } from '../models/ApplicationProperties';
+import {
+  Applicant,
+  ApplicationProperties,
+  ApplicantJSON,
+  ApplicantArguments,
+  ApplicationPropertiesJSON
+} from '../models';
 import { MissingIdError } from '../error';
 const API_URL = process.env.API_URL || `http://localhost:3000`;
 

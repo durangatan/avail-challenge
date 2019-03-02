@@ -7,5 +7,5 @@ gemfiles/*.lock
 *.swp
 /vendor/react
 **/node_modules
-frontend/build
+client/build
 coverage/

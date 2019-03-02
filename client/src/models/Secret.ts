@@ -19,14 +19,21 @@ export class Secret {
     const args = {
       ssn: json.ssn,
       mmn: json.mmn,
-      applicantId: json.applicant_id
+      applicantId: json.applicant_id || undefined
     };
     return new Secret(args);
   }
+  toJSON(): SecretJSON {
+    return {
+      ssn: this.ssn,
+      mmn: this.mmn,
+      applicant_id: this.applicantId || null
+    };
+  }
 }
 
-type SecretJSON = {
+export type SecretJSON = {
   ssn: string;
   mmn: string;
-  applicant_id: number;
+  applicant_id: number | null;
 };

@@ -21,7 +21,16 @@ export default function Admin(props: AdminScreenProps) {
       <h1>Applicants 👨‍👩‍👧‍👦</h1>
       <Table
         rows={[
-          ['Name', 'Email', 'D.O.B', 'Employment Status', 'Has Pets?', 'Landlord Name', 'Landlord Email', 'Submitted?'],
+          [
+            'Name',
+            'Email',
+            'D.O.B',
+            'Employment Status',
+            'Has Pets?',
+            'Landlord Name',
+            'Landlord Email',
+            'Has Secrets?'
+          ],
           ...applicants.map(applicant => applicant.getValues())
         ]}
       />
