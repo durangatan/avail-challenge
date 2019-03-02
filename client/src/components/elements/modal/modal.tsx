@@ -4,10 +4,11 @@ import styled from 'styled-components';
 const ModalContainer = styled.div<ModalProps>`
   display: ${props => (props.isOpen ? 'block' : 'none')};
   background: ${props => props.theme.color.white};
-  position: absolute;
+  position: fixed;
   top: 0;
-  height: 100%;
-  width: 100%;
+  right: 0;
+  bottom: 0;
+  left: 0;
 `;
 
 const InnerModalFlex = styled.div`

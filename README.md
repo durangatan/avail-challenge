@@ -31,3 +31,7 @@ If you have any questions don’t hesitate to reach out. I’ll be available by 
 Good luck!
 
 https://trello.com/b/BgLcj4jn/avail-challenge
+
+to send real emails you'll need to set a GMAIL_ADDRESS and GMAIL_PASSWORD environment variable.
+
+enable less secure apps.

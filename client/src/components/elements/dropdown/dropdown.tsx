@@ -11,6 +11,7 @@ const DropdownContainer = styled.div`
   flex-direction: fow;
   justify-content: center;
   align-items: center;
+  padding: 15px 0;
 `;
 
 const Option = styled.option`

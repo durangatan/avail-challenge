@@ -1,14 +1,30 @@
 import React, { useState } from 'react';
 import { Input, Button } from '../../../elements';
-import { FormTag, CanError } from '../../../elements/form';
-import { AdminArguments } from '../../../../models';
+import { FormTag, CanError, FormError } from '../../../elements/form';
+import { AdminArguments, Admin } from '../../../../models';
+import { login } from '../../../../api';
 type AdminState = AdminArguments & CanError;
 
-export default function AdminLoginForm() {
-  const [admin, setAdmin] = useState<AdminState>({
+export default function AdminLoginForm({
+  setSession
+}: {
+  setSession: React.Dispatch<React.SetStateAction<Admin | null>>;
+}) {
+  const [admin, setAdmin] = useState<AdminState & CanError>({
     email: '',
     password: ''
   });
+
+  const handleLogin = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+    return login(new Admin(admin))
+      .then((admin: Admin) => {
+        setSession(admin);
+      })
+      .catch(() => {
+        setAdmin({ ...admin, error: 'Error logging in. Please check your username and password and try again.' });
+      });
+  };
 
   return (
     <FormTag>
@@ -29,7 +45,8 @@ export default function AdminLoginForm() {
         onChange={e => setAdmin({ ...admin, password: e.currentTarget.value })}
         placeholder="password"
       />
-      <Button onClick={() => console.log(admin)} buttonType="action" text="Log In" />
+      <Button onClick={handleLogin} buttonType="action" text="Log In" />
+      {admin.error ? <FormError message={admin.error} /> : null}
     </FormTag>
   );
 }

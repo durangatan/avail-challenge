@@ -10,11 +10,11 @@ const theme = {
   },
   font: {
     size: {
-      p: '1.5em',
-      h1: '3em',
-      h2: '2.5em',
-      h3: '2em',
-      h4: '1.75em'
+      p: '1em',
+      h1: '2em',
+      h2: '1.75em',
+      h3: '1.5em',
+      h4: '1.25em'
     }
   }
 };

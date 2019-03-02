@@ -1,6 +1,8 @@
 class ApplicantsController < ApplicationController
-  before_action :set_applicant, only: [:show, :update, :destroy]
-  before_action :authenticate_applicant!, only: [:create, :update, :destroy]
+  include ActionController::MimeResponds
+
+  before_action :set_applicant, only: [:show, :destroy, :check_token]
+  before_action :authenticate_applicant!, only: [:update, :destroy]
 
   def index
     @applicants = Applicant.includes(:landlord).limit(50)
@@ -25,6 +27,7 @@ class ApplicantsController < ApplicationController
   end
 
   def update
+    byebug
     @applicant.update(applicant_params)
     head :no_content
   end
@@ -34,10 +37,18 @@ class ApplicantsController < ApplicationController
     head :no_content
   end
 
+  def check_token
+    if @applicant.token == params[:token] && !@applicant.submitted
+      json_response({ token: params[:token] })
+    else
+      json_response({}, :unauthorized)
+    end
+  end
+
   private
 
   def applicant_params
-    params.permit(:id, :dob, :employment_status, :has_pets, :landlord, :submitted, :token, :name, :email)
+    params.permit(:id, :dob, :employment_status, :has_pets, :landlord, :secret, :submitted, :token, :name, :email)
   end
 
   def set_applicant

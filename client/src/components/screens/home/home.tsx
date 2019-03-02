@@ -2,8 +2,9 @@ import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import { Main } from '../../page';
 import { RouteComponentProps } from 'react-router-dom';
-import { AdminLoginForm, TenantRegistrationForm } from './forms';
-import { FormTag } from '../../elements/form';
+import { AdminLoginForm, ApplicantRegistrationForm } from './forms';
+import { ApplicantArguments, Applicant, Admin, AdminArguments } from '../../../models';
+import { createApplicant, login } from '../../../api';
 import { media } from '../../util/style';
 // should have a login /register form
 // https://reacttraining.com/react-router/web/example/auth-workflow
@@ -28,15 +29,22 @@ const FormContainer = styled.section`
 
 type HomeScreenProps = {
   toggleModal: (modalShouldOpen: boolean, modalChildren: ReactNode) => void;
+  setSession: React.Dispatch<React.SetStateAction<Admin | null>>;
 } & RouteComponentProps;
 
 export default function Home(props: HomeScreenProps) {
+  const onCreateApplicant = () => {
+    return props.history.push('/success', {
+      message: 'Congrats on starting your journey with us. Expect an email shortly.'
+    });
+  };
+
   return (
     <Main>
-      <h1>Tenant Portal 🏠</h1>
+      <h1>Applicant Portal 🏠</h1>
       <FormContainer>
-        <TenantRegistrationForm />
-        <AdminLoginForm />
+        <ApplicantRegistrationForm onCreateApplicant={onCreateApplicant} />
+        <AdminLoginForm setSession={props.setSession} />
       </FormContainer>
     </Main>
   );

@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 
 export const Main = styled.main`
-  width: 100vw;
+  width: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  max-width: 1200px;
+  margin: auto;
 `;

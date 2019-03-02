@@ -21,48 +21,49 @@ const GlobalStyles = createGlobalStyle`
 `;
 
 const Container = styled.div`
-	font-size: ${({ theme }) => theme.font.size.p};
-	h1 {
-		font-size: ${({ theme }) => theme.font.size.h1};
-		text-align: center;
-	}
-	h2 {
-		font-size: ${({ theme }) => theme.font.size.h2};
-		text-align: center;
-	}
-	h3 {
-		font-size: ${({ theme }) => theme.font.size.h3};
-		margin: 0 auto 1em;
-	}
-	h4 {
-		font-size: ${({ theme }) => theme.font.size.h4};
-	}
-	table {
-		text-align: center;
-		table-layout: fixed;
-
-	}
-	th {
-		font-size: ${({ theme }) => theme.font.size.h3};
-		font-weight: bold;
-	}
-	td {
-		font-size: ${({ theme }) => theme.font.size.h3};
-	}
-	background-color: ${({ theme }) => theme.color.background};
+  font-size: ${({ theme }) => theme.font.size.p};
+  h1 {
+    font-size: ${({ theme }) => theme.font.size.h1};
+    text-align: center;
+  }
+  h2 {
+    font-size: ${({ theme }) => theme.font.size.h2};
+    text-align: center;
+  }
+  h3 {
+    font-size: ${({ theme }) => theme.font.size.h3};
+    margin: 0 auto 1em;
+  }
+  h4 {
+    font-size: ${({ theme }) => theme.font.size.h4};
+  }
+  table {
+    text-align: center;
+    table-layout: fixed;
+  }
+  th {
+    font-size: ${({ theme }) => theme.font.size.h3};
+    font-weight: bold;
+  }
+  td {
+    font-size: ${({ theme }) => theme.font.size.h3};
+  }
+  height: 100%;
+  width: 100%;
+  background-color: ${({ theme }) => theme.color.background};
 `;
 
 type PageProps = {
-	children: React.ReactChild;
+  children: React.ReactChild;
 };
 
 export default function Page({ children }: PageProps) {
-	return (
-		<ThemeProvider theme={ebcTheme}>
-			<React.Fragment>
-				<GlobalStyles />
-				<Container>{children}</Container>
-			</React.Fragment>
-		</ThemeProvider>
-	);
+  return (
+    <ThemeProvider theme={ebcTheme}>
+      <React.Fragment>
+        <GlobalStyles />
+        <Container>{children}</Container>
+      </React.Fragment>
+    </ThemeProvider>
+  );
 }

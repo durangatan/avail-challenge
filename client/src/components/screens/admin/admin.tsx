@@ -1,14 +1,21 @@
 import React, { ReactNode, useState, useEffect } from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
+import styled from 'styled-components';
 import { Main } from '../../page';
-import { Applicant } from '../../../models';
-import { Table } from '../../elements';
-import { getApplicants } from '../../../api';
+import { Applicant, Admin } from '../../../models';
+import { Table, Button } from '../../elements';
+import { getApplicants, logout } from '../../../api';
 type AdminScreenProps = {
   toggleModal: (modalShouldOpen: boolean, modalChildren: ReactNode) => void;
+  setSession: (admin: Admin | null) => void;
 } & RouteComponentProps;
 
-export default function Admin(props: AdminScreenProps) {
+const LogoutButtonContainer = styled.nav`
+  display: flex;
+  align-items: flex-end;
+`;
+
+export default function AdminScreen(props: AdminScreenProps) {
   const [applicants, setApplicants] = useState<Array<Applicant>>([]);
   useEffect(() => {
     getApplicants().then(applicants => {
@@ -18,6 +25,9 @@ export default function Admin(props: AdminScreenProps) {
 
   return (
     <Main>
+      <LogoutButtonContainer>
+        <Button onClick={() => props.setSession(null)} text="log out" buttonType="action" />
+      </LogoutButtonContainer>
       <h1>Applicants 👨‍👩‍👧‍👦</h1>
       <Table
         rows={[

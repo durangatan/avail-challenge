@@ -1,26 +1,20 @@
 import React, { useState, ReactNode, useEffect } from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
-import { Home, Admin as AdminScreen, Apply, Success } from '../screens';
-import { Modal } from '../elements';
-import { Admin, ApplicationProperties } from '../../models';
-import { getApplicationProperties } from '../../api';
+import { Route, Switch, Redirect, RouteComponentProps } from 'react-router-dom';
+import { Home, Admin as AdminScreen, Apply, Success, UnauthorizedScreen } from '../screens';
+import { TokenCheck } from './';
+import { Modal, Notification } from '../elements';
+import { Admin, ApplicationProperties, WithApplicantId } from '../../models';
+import { getApplicationProperties, login } from '../../api';
 
-import Cookie from 'js-cookie';
 export default function AppRoutes() {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const [modalChildren, setModalChildren] = useState<ReactNode>(null);
-  const [admin, setAdmin] = useState<Admin | null>(null);
-  // can store app properties in cookie?
+  const [notificationMessage, setNotificationMessage] = useState<string>('');
+  const [session, setSession] = useState<Admin | null>(null);
   const [appProperties, setAppProperties] = useState<ApplicationProperties>(
     new ApplicationProperties({ themeColorHex: '#000000', formType: 'Basic' })
   );
-  useEffect(() => {
-    // const adminCookie = Cookie.get('admin');
-    // if (adminCookie) {
-    // 	setAdmin(new Admin(adminCookie));
-    // }
-    // setAdmin(new Admin({ email: 'joeduran8@gmail.com' }));
-  }, []);
+
   useEffect(() => {
     getApplicationProperties().then((applicationProperties: ApplicationProperties) => {
       setAppProperties(applicationProperties);
@@ -37,13 +31,25 @@ export default function AppRoutes() {
       <Switch>
         <Route
           path="/apply/:id"
-          render={routeProps => <Apply {...routeProps} toggleModal={toggleModal} formType={appProperties.formType} />}
+          render={(routeProps: RouteComponentProps<WithApplicantId>) => (
+            <TokenCheck
+              {...routeProps}
+              successful={
+                <Apply
+                  {...routeProps}
+                  toggleModal={toggleModal}
+                  formType={appProperties.formType}
+                  setNotificationMessage={setNotificationMessage}
+                />
+              }
+            />
+          )}
         />
         <Route path="/admin" component={AdminScreen} />
         <Route
           path="/success"
           render={routeProps =>
-            routeProps.location.state.message ? (
+            routeProps.location.state && routeProps.location.state.message ? (
               // if you got to the success route somehow without a message we'll redirect you home.
               // No Unearned Success! 💪
               <Success message={routeProps.location.state.message} />
@@ -55,15 +61,16 @@ export default function AppRoutes() {
         <Route
           path="/"
           render={routeProps =>
-            admin ? (
-              <AdminScreen {...routeProps} toggleModal={toggleModal} />
+            session && session.id ? (
+              <AdminScreen {...routeProps} toggleModal={toggleModal} setSession={setSession} />
             ) : (
-              <Home {...routeProps} toggleModal={toggleModal} />
+              <Home {...routeProps} toggleModal={toggleModal} setSession={setSession} />
             )
           }
         />
       </Switch>
       <Modal isOpen={modalIsOpen}>{modalChildren}</Modal>
+      {notificationMessage.length ? <Notification message={notificationMessage} /> : null}
     </React.Fragment>
   );
 }

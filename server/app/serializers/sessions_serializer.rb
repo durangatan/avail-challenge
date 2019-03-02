@@ -2,6 +2,6 @@ class SessionsSerializer < ActiveModel::Serializer
   attributes :id
 
   def token
-    object.auth_token
+    object.token
   end
 end

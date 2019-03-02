@@ -3,8 +3,9 @@ import {
   Applicant,
   ApplicationProperties,
   ApplicantJSON,
-  ApplicantArguments,
-  ApplicationPropertiesJSON
+  ApplicationPropertiesJSON,
+  Admin,
+  AdminArguments
 } from '../models';
 import { MissingIdError } from '../error';
 const API_URL = process.env.API_URL || `http://localhost:3000`;
@@ -37,6 +38,11 @@ const postJson = (url: string, body: any) =>
       body: JSON.stringify(body),
       headers: { 'Content-Type': 'application/json' }
     }
+  }).then(res => {
+    if (res.status >= 400) {
+      return Promise.reject(new Error('Unauthorized'));
+    }
+    return res.json();
   });
 
 const putJson = (url: string, body: any) =>
@@ -47,6 +53,11 @@ const putJson = (url: string, body: any) =>
       body: JSON.stringify(body),
       headers: { 'Content-Type': 'application/json' }
     }
+  }).then(res => {
+    if (res.status >= 400) {
+      return Promise.reject(new Error('Unauthorized'));
+    }
+    return Promise.resolve();
   });
 
 export const getApplicants = () =>
@@ -59,14 +70,30 @@ export const getApplicant = (id: number) =>
     return Applicant.fromJSON(applicantJson);
   });
 
-export const saveApplicant = (applicant: ApplicantArguments) => {
+export const createApplicant = (applicant: Applicant) => {
+  return postJson(`${API_URL}/applicants`, applicant).then((applicantJson: ApplicantJSON) => {
+    return Applicant.fromJSON(applicantJson);
+  });
+};
+
+export const saveApplicant = (applicant: Applicant) => {
   if (!applicant.id) {
     throw new MissingIdError('No ID found for this applicant. Maybe you meant to call createApplicant?');
   }
   return putJson(`${API_URL}/applicants/${applicant.id}`, applicant);
 };
 
+export const checkApplicantToken = (applicantId: number, token: string) =>
+  postJson(`${API_URL}/applicants/token`, { id: applicantId, token });
+
 export const getApplicationProperties = () =>
   getJson(`${API_URL}/properties`).then((applicationProperties: ApplicationPropertiesJSON) => {
     return ApplicationProperties.fromJSON(applicationProperties);
   });
+
+export const login = (admin: Admin) =>
+  postJson(`${API_URL}/login`, admin).then(adminJson => {
+    return new Admin(adminJson);
+  });
+
+export const logout = () => postJson(`${API_URL}/logout`, {});

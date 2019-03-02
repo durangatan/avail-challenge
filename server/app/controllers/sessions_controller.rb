@@ -3,22 +3,23 @@ class SessionsController < ApplicationController
 
   def create
     if @param_user && @param_user.authenticate(create_params[:password])
-      return render json: SessionsSerializer.new(@param_user).to_json
+      json_response(@param_user)
     else
-      return json_response({ message: 'Unable to authenticate' }, :unprocessable_entity)
+      json_response({ message: "Unable to authenticate" }, :unprocessable_entity)
     end
   end
 
   def destroy
-    return json_response(0)
+    json_response(0)
   end
 
   private
+
   def create_params
     params.permit(:email, :password)
   end
-  def set_user
-    @param_user = User.find_by_email(create_params[:email])
-  end
 
+  def set_user
+    @param_user = Admin.find_by_email(create_params[:email])
+  end
 end

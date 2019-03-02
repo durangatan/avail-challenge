@@ -15,7 +15,6 @@ import { getApplicant, saveApplicant } from '../../../api';
 import { BasicFormQuestions, SecretFormQuestions, LandlordFormQuestions } from './forms';
 import { ConfirmSubmissionModal } from './modals';
 import { FormTag, CanError } from '../../elements/form';
-import { Notification } from '../../elements';
 import { ButtonContainer, Button } from '../../elements/button';
 import renderIf from '../../util/RenderIf';
 import { validateEmail, validateSSN } from '../../util/validators';
@@ -23,6 +22,7 @@ import { validateEmail, validateSSN } from '../../util/validators';
 type ApplyScreenProps = {
   toggleModal: (modalShouldOpen: boolean, modalChildren: ReactNode) => void;
   formType: FormType;
+  setNotificationMessage: React.Dispatch<React.SetStateAction<string>>;
 } & RouteComponentProps<WithApplicantId>;
 
 export default function Apply(props: ApplyScreenProps) {
@@ -52,7 +52,9 @@ export default function Apply(props: ApplyScreenProps) {
       }
     }
 
-    return saveApplicant(new Applicant(applicant));
+    return saveApplicant(new Applicant(applicant)).then(() => {
+      props.setNotificationMessage('Application saved successfully.');
+    });
   };
 
   // submits the form. You can't go back!
@@ -61,25 +63,34 @@ export default function Apply(props: ApplyScreenProps) {
     const emailError = validateEmail()(applicant.email);
     if (emailError) {
       setApplicant({ ...applicant, error: emailError });
+      props.toggleModal(false, null);
+
       return;
     }
     const landlordError = validateEmail()(landlord.email);
     if (landlordError) {
       setLandlord({ ...landlord, error: landlordError });
+      props.toggleModal(false, null);
       return;
     }
     if (props.formType === 'Full') {
       const secretError = validateSSN()(secret.ssn);
       if (secretError) {
         setSecret({ ...secret, error: secretError });
+        props.toggleModal(false, null);
         return;
       }
     }
-    return saveApplicant(new Applicant({ ...applicant, submitted: true, landlord, secret })).then(() => {
-      return props.history.push('/success', {
-        message: "Application Submitted! We'll be in touch soon with next steps."
+    return saveApplicant(new Applicant({ ...applicant, submitted: true, landlord, secret }))
+      .then(() => {
+        props.toggleModal(false, null);
+        return props.history.push('/success', {
+          message: "Application Submitted! We'll be in touch soon with next steps."
+        });
+      })
+      .catch(() => {
+        props.toggleModal(false, null);
       });
-    });
   };
 
   // toggles confirmation modal for submitting the application
@@ -90,7 +101,7 @@ export default function Apply(props: ApplyScreenProps) {
       <ConfirmSubmissionModal onCancel={() => props.toggleModal(false, null)} onSubmit={submit} />
     );
   };
-
+  const didError = applicant.error || landlord.error || secret.error;
   return (
     <Main>
       <h1>Your Application 📥</h1>
@@ -104,10 +115,9 @@ export default function Apply(props: ApplyScreenProps) {
         )}
         <ButtonContainer>
           <Button buttonType="action" text="Save" onClick={save} />
-          <Button buttonType="success" text="Submit" onClick={toggleConfirmationModal} />
+          <Button buttonType={didError ? 'error' : 'success'} text="Submit" onClick={toggleConfirmationModal} />
         </ButtonContainer>
       </FormTag>
-      <Notification message="Successful save" />
     </Main>
   );
 }

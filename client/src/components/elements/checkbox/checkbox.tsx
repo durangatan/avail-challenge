@@ -3,20 +3,13 @@ import styled from 'styled-components';
 
 const CheckboxContainer = styled.div`
   display: flex;
-
+  padding: 15px 0;
+  align-items: center;
   input {
-    zoom: 2;
-    transform: scale(2);
-    -ms-transform: scale(2);
-    -webkit-transform: scale(2);
-    -o-transform: scale(2);
-    -moz-transform: scale(2);
+    zoom: 1.5;
+    transform: scale(1.5);
     transform-origin: 0 0;
-    -ms-transform-origin: 0 0;
-    -webkit-transform-origin: 0 0;
-    -o-transform-origin: 0 0;
-    -moz-transform-origin: 0 0;
-    -webkit-transform-origin: 0 0;
+    margin: 0 10px;
   }
   label {
     font-size: ${({ theme }) => theme.font.size.p};
@@ -34,7 +27,7 @@ export default function Checkbox(props: CheckboxProps) {
   return (
     <CheckboxContainer>
       <label>{label}</label>
-      <input type="checkbox" checked={checked} onChange={onChange} name={name} />;
+      <input type="checkbox" checked={checked} onChange={onChange} name={name} />
     </CheckboxContainer>
   );
 }

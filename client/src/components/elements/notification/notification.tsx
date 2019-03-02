@@ -14,7 +14,11 @@ type Props = {
 };
 
 const NotificationContainer = styled.div<{ transitionState: TransitionStatus }>`
+  position: fixed;
+  top: 0;
+  right: 0;
   padding: 15px 15px 13px;
+  color: ${({ theme }) => theme.color.white};
   background-color: ${({ theme }) => theme.color.green};
   z-index: 1000;
   opacity: ${({ transitionState }) => (transitionState === 'entering' ? '0' : '1')};
@@ -26,11 +30,6 @@ const NotificationContainer = styled.div<{ transitionState: TransitionStatus }>`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  button:hover,
-  button:active,
-  button:focus {
-    background: transparent;
-  }
 `;
 
 export default function Notification(props: Props) {

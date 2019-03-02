@@ -1,10 +1,9 @@
 class PublicTenantLinkMailer < ApplicationMailer
-	default from: 'welcome@tenants.com'
- 
-	def welcome_email
-	  @user = params[:user]
-	  @token = params[:token]
-	  @url  = "http://localhost:3001/tenants/#{@user.id}?token=#{@token}"
-	  mail(to: @user.email, subject: 'Your Public Application Link')
-	end
+  default from: ENV["GMAIL_ADDRESS"]
+
+  def welcome_email
+    @applicant = params[:applicant]
+    @url = "http://localhost:3001/apply/#{@applicant.id}?token=#{@applicant.token}"
+    mail(to: @applicant.email, subject: "Your Public Application Link")
+  end
 end

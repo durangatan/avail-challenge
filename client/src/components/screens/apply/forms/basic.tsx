@@ -55,7 +55,7 @@ export default function BasicFormQuestions({
         checked={Boolean(applicant.hasPets)}
         onChange={e => onChange({ ...applicant, hasPets: !applicant.hasPets })}
         name="hasPets"
-        label="Pets?"
+        label="Have any pets?"
       />
       {error ? <FormError message={error} /> : null}
     </React.Fragment>

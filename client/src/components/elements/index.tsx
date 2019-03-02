@@ -7,3 +7,4 @@ export { Input } from './input';
 export { Table } from './table';
 export { Checkbox } from './checkbox';
 export { Notification } from './notification';
+export { Spinner } from './spinner';
