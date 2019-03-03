@@ -8,10 +8,11 @@ import {
   LandlordArguments,
   SecretArguments,
   FormType,
-  WithApplicantId
+  WithApplicantId,
+  Landlord
 } from '../../../models';
 import { SubmissionStatus } from './';
-import { getApplicant, saveApplicant } from '../../../api';
+import { getApplicant, saveApplicant, createSecret, saveLandlord, getLandlord } from '../../../api';
 import { BasicFormQuestions, SecretFormQuestions, LandlordFormQuestions } from './forms';
 import { ConfirmSubmissionModal } from './modals';
 import { FormTag, CanError } from '../../elements/form';
@@ -34,8 +35,15 @@ export default function Apply(props: ApplyScreenProps) {
   useEffect(() => {
     getApplicant(Number(props.match.params.id)).then((applicant: Applicant) => {
       setApplicant(applicant);
+      if (applicant.landlordId) {
+        getLandlord(applicant.landlordId).then((landlord: Landlord) => {
+          setLandlord(landlord);
+        });
+      }
     });
   }, []);
+
+  useEffect(() => {}, []);
 
   // save the form without submitting. Validates the email fields for the applicant and landlord.
   const save = (e: React.MouseEvent<HTMLElement>) => {
@@ -52,9 +60,16 @@ export default function Apply(props: ApplyScreenProps) {
       }
     }
 
-    return saveApplicant(new Applicant(applicant)).then(() => {
-      props.setNotificationMessage('Application saved successfully.');
-    });
+    return saveApplicant(new Applicant({ ...applicant, landlordId: landlord.id }))
+      .then(() => {
+        if (landlord.email.length || landlord.name.length) {
+          return saveLandlord(new Landlord(landlord));
+        }
+        return Promise.resolve();
+      })
+      .then(() => {
+        props.setNotificationMessage('Application saved successfully.');
+      });
   };
 
   // submits the form. You can't go back!
@@ -81,14 +96,21 @@ export default function Apply(props: ApplyScreenProps) {
         return;
       }
     }
-    return saveApplicant(new Applicant({ ...applicant, submitted: true, landlord, secret }))
+    return saveApplicant(new Applicant(applicant))
+      .then(() => {
+        return createSecret(new Secret(secret));
+      })
+      .then(() => {
+        return saveLandlord(new Landlord(landlord));
+      })
       .then(() => {
         props.toggleModal(false, null);
         return props.history.push('/success', {
           message: "Application Submitted! We'll be in touch soon with next steps."
         });
       })
-      .catch(() => {
+      .catch(e => {
+        console.log(e);
         props.toggleModal(false, null);
       });
   };

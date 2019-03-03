@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  put "/landlords" => "landlords#update"
+  post "/secrets" => "secrets#create"
   resources :applicants
   post "/applicants/token" => "applicants#check_token"
   get "/properties" => "application#properties"

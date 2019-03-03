@@ -1,7 +1,7 @@
 class ApplicantsController < ApplicationController
   include ActionController::MimeResponds
 
-  before_action :set_applicant, only: [:show, :destroy, :check_token]
+  before_action :set_applicant, only: [:update, :destroy, :check_token, :show]
   before_action :authenticate_applicant!, only: [:update, :destroy]
 
   def index
@@ -27,7 +27,6 @@ class ApplicantsController < ApplicationController
   end
 
   def update
-    byebug
     @applicant.update(applicant_params)
     head :no_content
   end
@@ -48,10 +47,10 @@ class ApplicantsController < ApplicationController
   private
 
   def applicant_params
-    params.permit(:id, :dob, :employment_status, :has_pets, :landlord, :secret, :submitted, :token, :name, :email)
+    params.permit(:id, :dob, :employment_status, :has_pets, :submitted, :token, :name, :email)
   end
 
   def set_applicant
-    @applicant = Applicant.includes(:landlord).find(params[:id])
+    @applicant = Applicant.find(params[:id])
   end
 end

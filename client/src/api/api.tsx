@@ -5,7 +5,9 @@ import {
   ApplicantJSON,
   ApplicationPropertiesJSON,
   Admin,
-  AdminArguments
+  Secret,
+  Landlord,
+  LandlordJSON
 } from '../models';
 import { MissingIdError } from '../error';
 const API_URL = process.env.API_URL || `http://localhost:3000`;
@@ -42,7 +44,9 @@ const postJson = (url: string, body: any) =>
     if (res.status >= 400) {
       return Promise.reject(new Error('Unauthorized'));
     }
-    return res.json();
+    if (res.body) {
+      return res.json();
+    }
   });
 
 const putJson = (url: string, body: any) =>
@@ -71,9 +75,7 @@ export const getApplicant = (id: number) =>
   });
 
 export const createApplicant = (applicant: Applicant) => {
-  return postJson(`${API_URL}/applicants`, applicant).then((applicantJson: ApplicantJSON) => {
-    return Applicant.fromJSON(applicantJson);
-  });
+  return postJson(`${API_URL}/applicants`, applicant);
 };
 
 export const saveApplicant = (applicant: Applicant) => {
@@ -97,3 +99,12 @@ export const login = (admin: Admin) =>
   });
 
 export const logout = () => postJson(`${API_URL}/logout`, {});
+
+export const createSecret = (secret: Secret) => postJson(`${API_URL}/secrets`, secret);
+
+export const saveLandlord = (landlord: Landlord) => putJson(`${API_URL}/landlords`, landlord);
+
+export const getLandlord = (id: number) =>
+  getJson(`${API_URL}/landlords/${id}`).then((landlordJson: LandlordJSON) => {
+    return Landlord.fromJSON(landlordJson);
+  });
