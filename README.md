@@ -1,37 +1,51 @@
 # avail-challenge
-A React On Rails Production
 
-Good morning Joe!
+## Features
+- Potential tenents can enter their name and email to get a secure public link to a basic lease application.
+- The link is secured via a unique token that is invalided when an applicant submits their application.
+- Applicants can save their form and come back as many times as they like; however, if the "Full" form option is selected, social security numbers and mothers' maiden names will not be saved until the whole form is submitted.
+- Applicants can delete their application at any time.
+- Admins can see a flat list of all submitted applicants by logging in via the admin login form.
+- Admins can toggle between the basic and full form type.
+- All update and destroy actions have authorization scoped to their own entity.
 
-It was a pleasure talking to you on Monday afternoon. I’m excited about our conversation and I think Avail has what you’re looking for in terms of early-stage start ups with a lot of growth potential. As we discussed, I’m sending over a coding challenge, outlined below. Please have it ready to send to me by Tuesday morning, at which point I’ll take some time to review and I’ll reach out about next steps.
+## Tech
 
-If you finish early, feel free to send it, but finishing before the deadline is not considered part of the challenge.
+### Frontend
+- React with Hooks
+- Typescript
+- React Router
+- Styled Components
 
-Overview
-The CRUD pattern is fundamental to the Internet and to SaaS companies. We would like to see your ability to put together a small Rails project to demonstrate abilities in MVC architecture and single-page web application architecture.
+#### Backend
+- Ruby on Rails
+- Bcrypt
+- Postgresql
+- Action Model Serializers
 
-The problem
-You, as a landlord, are looking to screen tenants online. You also love a good tech challenge so you've decided to build a tool for yourself. What you need is a way to email tenants a link to a page that allows them to complete an application consisting of basic demographic questions, the applicant’s current landlord name and email, and some additional items you’re interested (e.g. are you a smoker?).
+## Development
 
-The requirements
-Ruby on Rails application
-React application bundled along with the Ruby on Rails application
-Ability to create / read / update / delete a tenant application in a single-page application backed by a JSON API, with both front-end and back-end validations. What fields exist on the application and how they should be validated is up to you.
-Ability to send an email containing a public link to an application. The link should expire once the application is submitted.
-The landlord should be able to select between a "basic" application and a "full" application. If that setting is set to "full" the tenant will be required to enter their SSN and answer an identity validation questions (e.g. what is your mother's maiden name).
+create a .env file in the root directory of this repo and paste the following information, substituting your own values where necessary. Note that gmail addresses with 2FA enabled cannot be used as a `from` address, and that you may need to "enable less secure apps" in your gmail settings in order for the emails to actually send.
 
-Deliverables
-We expect the final product to be web-ready, a Git repository on Github which we are able to clone. We should be able to checkout the repository, and be provided instructions for how to view the pages of the application in our browsers.
+```
+GMAIL_ADDRESS=<YOUR GMAIL ADDRESS>
+GMAIL_PASSWORD=<YOUR GMAIL PASSWORD>
+```
 
-Evaluation criteria
-We will first evaluate for functionality. Does it work? Is it pulling in data from an API, and sending requests? We will then evaluate for presentation. Does it look professional? Is the interface user-friendly and does it follow best practices for UX? We will then evaluate for technical proficiency. What tools were used? Can it be broken? Is it implemented in a clean, readable manner? Does it demonstrate knowledge of single-page application architecture and tools? We want to see what you’re able to do given a limited timeline and limited guidance on the task at hand.
+Make sure the docker daemon is running. If you don't have docker installed, you can download it [here](https://docs.docker.com/install/).
 
-If you have any questions don’t hesitate to reach out. I’ll be available by email throughout the process.
+run `docker-compose up`. This command:
 
-Good luck!
+- creates 3 containers - 1 for the database, 1 for the Rails API, and 1 for the React app.
+- creates, migrates, and seeds the database.
 
-https://trello.com/b/BgLcj4jn/avail-challenge
+you should be able to visit localhost:3000 in your browser and see the app.
 
-to send real emails you'll need to set a GMAIL_ADDRESS and GMAIL_PASSWORD environment variable.
+The seed file creates an admin user so you can peruse the site as an admin.
 
-enable less secure apps.
+```
+    email: admin@mail.com
+    password: secret
+```
+
+I used trello to track my progress through the requirements of this challenge. you can find my trello board [here](https://trello.com/b/BgLcj4jn/avail-challenge) - it might give you a sense of the direction I would have headed if I had more time.

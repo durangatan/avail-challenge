@@ -14,7 +14,8 @@ const API_URL = process.env.API_URL || `http://localhost:3000`;
 
 const METHODS = {
   POST: 'POST',
-  PUT: 'PUT'
+  PUT: 'PUT',
+  DELETE: 'DELETE'
 };
 
 export type TenantFetchConfig = {
@@ -44,9 +45,7 @@ const postJson = (url: string, body: any) =>
     if (res.status >= 400) {
       return Promise.reject(new Error('Unauthorized'));
     }
-    if (res.body) {
-      return res.json();
-    }
+    return res.json();
   });
 
 const putJson = (url: string, body: any) =>
@@ -61,7 +60,15 @@ const putJson = (url: string, body: any) =>
     if (res.status >= 400) {
       return Promise.reject(new Error('Unauthorized'));
     }
-    return Promise.resolve();
+    return res.json();
+  });
+
+const deleteRequest = (url: string) =>
+  tenantFetch({
+    url,
+    config: {
+      method: METHODS.DELETE
+    }
   });
 
 export const getApplicants = () =>
@@ -85,11 +92,20 @@ export const saveApplicant = (applicant: Applicant) => {
   return putJson(`${API_URL}/applicants/${applicant.id}`, applicant);
 };
 
+export const deleteApplicant = (applicantId: number, token: string) => {
+  return deleteRequest(`${API_URL}/applicants/${applicantId}?token=${token}`);
+};
+
 export const checkApplicantToken = (applicantId: number, token: string) =>
   postJson(`${API_URL}/applicants/token`, { id: applicantId, token });
 
 export const getApplicationProperties = () =>
   getJson(`${API_URL}/properties`).then((applicationProperties: ApplicationPropertiesJSON) => {
+    return ApplicationProperties.fromJSON(applicationProperties);
+  });
+
+export const saveApplicationProperties = (properties: ApplicationProperties) =>
+  postJson(`${API_URL}/properties`, properties).then((applicationProperties: ApplicationPropertiesJSON) => {
     return ApplicationProperties.fromJSON(applicationProperties);
   });
 
@@ -106,5 +122,5 @@ export const saveLandlord = (landlord: Landlord) => putJson(`${API_URL}/landlord
 
 export const getLandlord = (id: number) =>
   getJson(`${API_URL}/landlords/${id}`).then((landlordJson: LandlordJSON) => {
-    return Landlord.fromJSON(landlordJson);
+    return new Landlord(landlordJson);
   });

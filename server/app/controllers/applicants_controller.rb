@@ -5,7 +5,7 @@ class ApplicantsController < ApplicationController
   before_action :authenticate_applicant!, only: [:update, :destroy]
 
   def index
-    @applicants = Applicant.includes(:landlord).limit(50)
+    @applicants = Applicant.where(submitted: true).includes(:landlord).limit(50)
     json_response(@applicants)
   end
 
@@ -28,7 +28,7 @@ class ApplicantsController < ApplicationController
 
   def update
     @applicant.update(applicant_params)
-    head :no_content
+    json_response(@applicant)
   end
 
   def destroy
@@ -47,7 +47,7 @@ class ApplicantsController < ApplicationController
   private
 
   def applicant_params
-    params.permit(:id, :dob, :employment_status, :has_pets, :submitted, :token, :name, :email)
+    params.permit(:id, :dob, :employment_status, :has_pets, :submitted, :token, :name, :email, :landlord_id)
   end
 
   def set_applicant

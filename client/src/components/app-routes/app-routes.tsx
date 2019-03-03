@@ -1,10 +1,10 @@
 import React, { useState, ReactNode, useEffect } from 'react';
 import { Route, Switch, Redirect, RouteComponentProps } from 'react-router-dom';
-import { Home, Admin as AdminScreen, Apply, Success, UnauthorizedScreen } from '../screens';
+import { Home, Admin as AdminScreen, Apply, Success } from '../screens';
 import { TokenCheck } from './';
 import { Modal, Notification } from '../elements';
 import { Admin, ApplicationProperties, WithApplicantId } from '../../models';
-import { getApplicationProperties, login } from '../../api';
+import { getApplicationProperties } from '../../api';
 
 export default function AppRoutes() {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);

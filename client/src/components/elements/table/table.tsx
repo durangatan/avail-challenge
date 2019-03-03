@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const TableTag = styled.table`
-  width: 100%;
+  overflow: scroll;
 `;
 
 export default function Table({ rows }: { rows: Array<any> }) {

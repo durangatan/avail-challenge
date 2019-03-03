@@ -1,8 +1,9 @@
 import { Landlord, LandlordJSON, LandlordArguments, Secret, SecretArguments, SecretJSON } from './';
+import { formatDate } from '../components/util';
 export type ApplicantArguments = {
   email: string;
   name: string;
-  dob?: number;
+  dob?: string;
   employmentStatus?: EmploymentStatus;
   hasPets?: boolean;
   landlordId?: number;
@@ -22,7 +23,7 @@ export class Applicant {
   id?: number;
   email: string;
   name: string;
-  dob?: number;
+  dob?: string;
   employmentStatus?: EmploymentStatus;
   hasPets: boolean;
   submitted: boolean;
@@ -55,10 +56,9 @@ export class Applicant {
       this.email,
       this.dob,
       this.employmentStatus,
-      this.hasPets,
+      this.hasPets ? '✅' : '',
       this.landlord ? this.landlord.name : '',
-      this.landlord ? this.landlord.email : '',
-      this.secret ? true : false
+      this.landlord ? this.landlord.email : ''
     ];
   }
 
@@ -67,10 +67,11 @@ export class Applicant {
       id: json.id,
       email: json.email,
       name: json.name,
-      dob: json.dob || undefined,
+      dob: json.dob ? formatDate(json.dob) : undefined,
       employmentStatus: json.employment_status || 'Unemployed',
       hasPets: json.has_pets || undefined,
       landlordId: json.landlord_id || undefined,
+      landlord: json.landlord ? new Landlord(json.landlord) : undefined,
       submitted: json.submitted || undefined,
       token: json.token || undefined
     };

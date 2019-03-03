@@ -9,6 +9,6 @@ class SecretsController < ApplicationController
   private
 
   def secret_params
-    params.require(:secret).permit(:mmn, :ssn, :id)
+    params.permit(:mmn, :ssn, :applicant_id)
   end
 end

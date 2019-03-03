@@ -1,6 +1,6 @@
 class Applicant < ApplicationRecord
-  has_one :secret, autosave: true
-  belongs_to :landlord, autosave: true
+  has_one :secret
+  belongs_to :landlord
   before_create :generate_token
   attr_readonly :token
   validates :name, presence: true, uniqueness: true

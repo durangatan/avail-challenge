@@ -12,12 +12,12 @@ import {
   Landlord
 } from '../../../models';
 import { SubmissionStatus } from './';
-import { getApplicant, saveApplicant, createSecret, saveLandlord, getLandlord } from '../../../api';
+import { getApplicant, saveApplicant, createSecret, saveLandlord, getLandlord, deleteApplicant } from '../../../api';
 import { BasicFormQuestions, SecretFormQuestions, LandlordFormQuestions } from './forms';
-import { ConfirmSubmissionModal } from './modals';
+import { ConfirmSubmissionModal, DeleteApplicationModal } from './modals';
 import { FormTag, CanError } from '../../elements/form';
 import { ButtonContainer, Button } from '../../elements/button';
-import renderIf from '../../util/RenderIf';
+import { renderIf } from '../../util';
 import { validateEmail, validateSSN } from '../../util/validators';
 
 type ApplyScreenProps = {
@@ -43,12 +43,9 @@ export default function Apply(props: ApplyScreenProps) {
     });
   }, []);
 
-  useEffect(() => {}, []);
-
   // save the form without submitting. Validates the email fields for the applicant and landlord.
   const save = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    // validate presence of name and email
     const emailError = validateEmail()(applicant.email);
     if (emailError) {
       return setApplicant({ ...applicant, error: emailError });
@@ -60,12 +57,16 @@ export default function Apply(props: ApplyScreenProps) {
       }
     }
 
-    return saveApplicant(new Applicant({ ...applicant, landlordId: landlord.id }))
-      .then(() => {
-        if (landlord.email.length || landlord.name.length) {
-          return saveLandlord(new Landlord(landlord));
-        }
-        return Promise.resolve();
+    // if the landlord is present, we need to save it before the applicant to get the id.
+    // if it isn't, we'll just continue down the promise chain.
+    const landlordPromise =
+      landlord.email.length || landlord.name.length
+        ? () => saveLandlord(new Landlord(landlord))
+        : () => Promise.resolve();
+
+    return landlordPromise()
+      .then((landlord: Landlord | undefined) => {
+        return saveApplicant(new Applicant({ ...applicant, landlordId: landlord ? landlord.id : undefined }));
       })
       .then(() => {
         props.setNotificationMessage('Application saved successfully.');
@@ -79,7 +80,6 @@ export default function Apply(props: ApplyScreenProps) {
     if (emailError) {
       setApplicant({ ...applicant, error: emailError });
       props.toggleModal(false, null);
-
       return;
     }
     const landlordError = validateEmail()(landlord.email);
@@ -96,12 +96,17 @@ export default function Apply(props: ApplyScreenProps) {
         return;
       }
     }
-    return saveApplicant(new Applicant(applicant))
-      .then(() => {
-        return createSecret(new Secret(secret));
+
+    return saveLandlord(new Landlord(landlord))
+      .then((landlord: Landlord) => {
+        return saveApplicant(new Applicant({ ...applicant, landlordId: landlord.id, submitted: true }));
       })
       .then(() => {
-        return saveLandlord(new Landlord(landlord));
+        const secretPromise =
+          props.formType === 'Full'
+            ? () => createSecret(new Secret({ ...secret, applicantId: applicant.id }))
+            : () => Promise.resolve();
+        return secretPromise();
       })
       .then(() => {
         props.toggleModal(false, null);
@@ -109,20 +114,12 @@ export default function Apply(props: ApplyScreenProps) {
           message: "Application Submitted! We'll be in touch soon with next steps."
         });
       })
-      .catch(e => {
-        console.log(e);
+      .catch(() => {
         props.toggleModal(false, null);
       });
   };
 
   // toggles confirmation modal for submitting the application
-  const toggleConfirmationModal = (e: React.MouseEvent<HTMLElement>) => {
-    e.preventDefault();
-    props.toggleModal(
-      true,
-      <ConfirmSubmissionModal onCancel={() => props.toggleModal(false, null)} onSubmit={submit} />
-    );
-  };
   const didError = applicant.error || landlord.error || secret.error;
   return (
     <Main>
@@ -137,7 +134,36 @@ export default function Apply(props: ApplyScreenProps) {
         )}
         <ButtonContainer>
           <Button buttonType="action" text="Save" onClick={save} />
-          <Button buttonType={didError ? 'error' : 'success'} text="Submit" onClick={toggleConfirmationModal} />
+          <Button
+            buttonType={didError ? 'error' : 'success'}
+            text="Submit"
+            onClick={(e: React.MouseEvent<HTMLElement>) => {
+              e.preventDefault();
+              props.toggleModal(
+                true,
+                <ConfirmSubmissionModal onCancel={() => props.toggleModal(false, null)} onSubmit={submit} />
+              );
+            }}
+          />
+          <Button
+            buttonType="error"
+            text="Delete Application"
+            onClick={(e: React.MouseEvent<HTMLElement>) => {
+              e.preventDefault();
+              props.toggleModal(
+                true,
+                <DeleteApplicationModal
+                  onCancel={() => props.toggleModal(false, null)}
+                  onSubmit={() => {
+                    return deleteApplicant(Number(applicant.id), String(applicant.token)).then(() => {
+                      props.history.push('/success', { message: "We're sorry to see you go!" });
+                      props.toggleModal(false, null);
+                    });
+                  }}
+                />
+              );
+            }}
+          />
         </ButtonContainer>
       </FormTag>
     </Main>

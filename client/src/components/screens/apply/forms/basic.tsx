@@ -1,5 +1,4 @@
 import React from 'react';
-import { Applicant } from '../../../../models';
 import { Input, Dropdown, Checkbox } from '../../../elements';
 import { SelectOption } from '../../../elements/dropdown/dropdown';
 import { ApplicantArguments } from '../../../../models/Applicant';

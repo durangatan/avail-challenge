@@ -18,8 +18,7 @@ export default function SecretFormQuestions({
       <h2>Secret Info 🤫</h2>
       <p>
         We will need some sensitive indentification info from you to complete a background check. Don't worry - your
-        secrets are safe with us. Note: for security reasons, you cannot save an incomplete form that contains secrets -
-        you will have to submit the whole form.
+        secrets are safe with us. Note: for security reasons, secrets will not be saved unless you hit submit.
       </p>
       <Input
         label="SSN:"

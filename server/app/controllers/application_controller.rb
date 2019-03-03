@@ -12,8 +12,4 @@ class ApplicationController < ActionController::API
   def admin_only!
     json_response({}, :unauthorized) unless @admin
   end
-
-  def properties
-    json_response(ApplicationProperty.first.to_json, :ok)
-  end
 end

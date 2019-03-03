@@ -6,6 +6,12 @@ import { RouteComponentProps } from 'react-router';
 
 type AuthState = 'Loading' | 'Successful' | 'Failed';
 
+/*
+ * Used for routes that require a token query param. 
+ * Will either render the unauthorized page or another react element based on a prop depending
+ * on the validity of the token.
+ */
+
 export default function TokenCheck({
   successful,
   location,

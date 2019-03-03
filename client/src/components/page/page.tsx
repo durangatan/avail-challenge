@@ -39,14 +39,15 @@ const Container = styled.div`
   }
   table {
     text-align: center;
-    table-layout: fixed;
+    table-layout: auto;
   }
   th {
     font-size: ${({ theme }) => theme.font.size.h3};
     font-weight: bold;
   }
   td {
-    font-size: ${({ theme }) => theme.font.size.h3};
+    font-size: ${({ theme }) => theme.font.size.p};
+    padding: 20px;
   }
   height: 100%;
   width: 100%;
