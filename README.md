@@ -59,6 +59,6 @@ I used trello to track my progress through the requirements of this challenge. y
 
 ## Troubleshooting
 - If the `docker-compose` command fails, you can run the client and server apps separately.
-- from `/client`: `npm install && npm start`
 - from `/server`: `bundle install && be rake db:create && be rake db:migrate && be rake db:seed && rails s`
+- from `/client`: `npm install && npm start`
 - you may need to install Bundler 2.0 if it is not in your path already.
