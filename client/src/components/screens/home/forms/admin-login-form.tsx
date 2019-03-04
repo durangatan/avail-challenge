@@ -35,6 +35,7 @@ export default function AdminLoginForm({ setSession }: { setSession: (admin: Adm
         type={'email'}
         onChange={e => setAdmin({ ...admin, email: e.currentTarget.value })}
         placeholder="email@domain.com"
+        autoComplete="username"
       />
       <Input
         label="password:"
@@ -43,6 +44,7 @@ export default function AdminLoginForm({ setSession }: { setSession: (admin: Adm
         type={'password'}
         onChange={e => setAdmin({ ...admin, password: e.currentTarget.value })}
         placeholder="password"
+        autoComplete="current-password"
       />
       <Button onClick={handleLogin} buttonType="action" text="Log In" />
       {admin.error ? <FormError message={admin.error} /> : null}

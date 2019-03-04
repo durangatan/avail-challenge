@@ -19,7 +19,7 @@ export default function BasicFormQuestions({
   );
   return (
     <React.Fragment>
-      <h2>Your Info 🙋🏿‍♂</h2>
+      <h2>Your Info 🙋‍♀️</h2>
       <h4>Tell us a little about yourself.</h4>
       <Input
         label="email:"

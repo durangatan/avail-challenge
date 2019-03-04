@@ -8,6 +8,7 @@ type InputProps = {
   name: string;
   onChange: (event: React.FormEvent<HTMLInputElement>) => void;
   placeholder?: string;
+  autoComplete?: string;
 };
 
 export const InputContainer = styled.div`
@@ -27,11 +28,11 @@ export const InputContainer = styled.div`
   }
 `;
 
-export default function Input({ label, value, type, onChange, placeholder }: InputProps) {
+export default function Input({ label, value, type, onChange, placeholder, autoComplete }: InputProps) {
   return (
     <InputContainer>
       <label>{label}</label>
-      <input value={value} type={type} onChange={onChange} placeholder={placeholder} />
+      <input value={value} type={type} onChange={onChange} placeholder={placeholder} autoComplete={autoComplete} />
     </InputContainer>
   );
 }

@@ -40,6 +40,7 @@ export default function ApplicantRegistrationForm({ onCreateApplicant }: { onCre
         type="text"
         onChange={e => setApplicantInfo({ ...applicantInfo, name: e.currentTarget.value })}
         placeholder="John Doe"
+        autoComplete="username"
       />
       <Input
         label="email:"
@@ -48,6 +49,7 @@ export default function ApplicantRegistrationForm({ onCreateApplicant }: { onCre
         type="text"
         onChange={e => setApplicantInfo({ ...applicantInfo, email: e.currentTarget.value })}
         placeholder="email@domain.com"
+        autoComplete="username"
       />
       <Button isLoading={loading} onClick={handleCreateApplicant} buttonType="action" text="Send" />
       {applicantInfo.error ? <FormError message={applicantInfo.error} /> : null}
