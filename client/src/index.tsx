@@ -4,10 +4,6 @@ import { BrowserRouter } from 'react-router-dom';
 import AppRoutes from './components/app-routes';
 import * as serviceWorker from './serviceWorker';
 import Page from './components/page';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
-
-library.add(faBars);
 
 ReactDOM.render(
   <Page>

@@ -28,6 +28,8 @@
 create a .env file in the root directory of this repo and paste the following information, substituting your own values where necessary. Note that gmail addresses with 2FA enabled cannot be used as a `from` address, and that you may need to "enable less secure apps" in your gmail settings in order for the emails to actually send.
 
 ```
+API_URL=server:3000
+PORT=3001
 GMAIL_ADDRESS=<YOUR GMAIL ADDRESS>
 GMAIL_PASSWORD=<YOUR GMAIL PASSWORD>
 ```

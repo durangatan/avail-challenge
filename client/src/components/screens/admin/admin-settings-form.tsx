@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Button, Dropdown } from '../../elements';
+import { Button, Dropdown, Input } from '../../elements';
 import { getApplicationProperties, saveApplicationProperties } from '../../../api';
 import { ApplicationProperties, Admin, FormType } from '../../../models';
 
@@ -9,10 +9,15 @@ const SettingsContainer = styled.nav`
   flex-direction: column;
 `;
 
-export default function AdminSettingsForm({ setSession }: { setSession: (admin: Admin | null) => void }) {
-  const [applicationProperties, setApplicationProperties] = useState<ApplicationProperties>(
-    new ApplicationProperties({ themeColorHex: '#000000', formType: 'Basic' })
-  );
+export default function AdminSettingsForm({
+  setSession,
+  setApplicationProperties,
+  applicationProperties
+}: {
+  applicationProperties: ApplicationProperties;
+  setApplicationProperties: (applicationProperties: ApplicationProperties) => void;
+  setSession: (admin: Admin | null) => void;
+}) {
   useEffect(() => {
     getApplicationProperties().then(applicationProperties => {
       setApplicationProperties(applicationProperties);
@@ -35,6 +40,19 @@ export default function AdminSettingsForm({ setSession }: { setSession: (admin: 
           );
         }}
         name="Form Type"
+      />
+      <Input
+        type="color"
+        name="theme-color"
+        label="Theme Color"
+        value={applicationProperties.themeColorHex}
+        onChange={event => {
+          saveApplicationProperties(
+            new ApplicationProperties({ ...applicationProperties, themeColorHex: event.currentTarget.value })
+          ).then((applicationProperties: ApplicationProperties) => {
+            setApplicationProperties(applicationProperties);
+          });
+        }}
       />
       <Button onClick={() => setSession(null)} text="log out" buttonType="action" />
     </SettingsContainer>

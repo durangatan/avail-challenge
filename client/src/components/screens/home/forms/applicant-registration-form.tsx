@@ -3,11 +3,11 @@ import { Input, Button } from '../../../elements';
 import { ApplicantArguments, Applicant } from '../../../../models';
 import { FormTag, CanError, FormError } from '../../../elements/form';
 import { createApplicant } from '../../../../api';
-import { RouteComponentProps } from 'react-router';
 
 type ApplicantRegistrationState = ApplicantArguments & CanError;
 
 export default function ApplicantRegistrationForm({ onCreateApplicant }: { onCreateApplicant: () => void }) {
+  const [loading, setLoading] = useState<boolean>(false);
   const [applicantInfo, setApplicantInfo] = useState<ApplicantRegistrationState>({
     name: '',
     email: ''
@@ -15,11 +15,13 @@ export default function ApplicantRegistrationForm({ onCreateApplicant }: { onCre
 
   const handleCreateApplicant = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
+    setLoading(true);
     return createApplicant(new Applicant(applicantInfo))
       .then((applicant: Applicant) => {
         return onCreateApplicant();
       })
       .catch(() => {
+        setLoading(false);
         setApplicantInfo({ ...applicantInfo, error: 'Error sending welcome email. Please try again.' });
       });
   };
@@ -47,7 +49,7 @@ export default function ApplicantRegistrationForm({ onCreateApplicant }: { onCre
         onChange={e => setApplicantInfo({ ...applicantInfo, email: e.currentTarget.value })}
         placeholder="email@domain.com"
       />
-      <Button onClick={handleCreateApplicant} buttonType="action" text="send" />
+      <Button isLoading={loading} onClick={handleCreateApplicant} buttonType="action" text="Send" />
       {applicantInfo.error ? <FormError message={applicantInfo.error} /> : null}
     </FormTag>
   );

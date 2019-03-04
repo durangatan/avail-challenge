@@ -16,7 +16,8 @@ const theme = {
       h3: '1.5em',
       h4: '1.25em'
     }
-  }
+  },
+  themeColorHex: '#164e8d'
 };
 
 export default theme;

@@ -30,7 +30,7 @@ export default function Apply(props: ApplyScreenProps) {
   const [applicant, setApplicant] = useState<ApplicantArguments & CanError>({ name: '', email: '' });
   const [landlord, setLandlord] = useState<LandlordArguments & CanError>({ name: '', email: '' });
   const [secret, setSecret] = useState<SecretArguments & CanError>({ ssn: '', mmn: '', applicantId: applicant.id });
-
+  const [loading, setLoading] = useState<boolean>(false);
   // get the saved state of this applicant's form
   useEffect(() => {
     getApplicant(Number(props.match.params.id)).then((applicant: Applicant) => {
@@ -46,13 +46,19 @@ export default function Apply(props: ApplyScreenProps) {
   // save the form without submitting. Validates the email fields for the applicant and landlord.
   const save = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
+    setLoading(true);
+
     const emailError = validateEmail()(applicant.email);
     if (emailError) {
+      setLoading(false);
+
       return setApplicant({ ...applicant, error: emailError });
     }
     if (landlord.email.length) {
       const landlordError = validateEmail()(landlord.email);
       if (landlordError) {
+        setLoading(false);
+
         return setLandlord({ ...landlord, error: landlordError });
       }
     }
@@ -69,6 +75,7 @@ export default function Apply(props: ApplyScreenProps) {
         return saveApplicant(new Applicant({ ...applicant, landlordId: landlord ? landlord.id : undefined }));
       })
       .then(() => {
+        setLoading(false);
         props.setNotificationMessage('Application saved successfully.');
       });
   };
@@ -116,6 +123,7 @@ export default function Apply(props: ApplyScreenProps) {
       })
       .catch(() => {
         props.toggleModal(false, null);
+        setLoading(false);
       });
   };
 
@@ -133,7 +141,7 @@ export default function Apply(props: ApplyScreenProps) {
           <SecretFormQuestions secret={secret} onChange={setSecret} error={secret.error} />
         )}
         <ButtonContainer>
-          <Button buttonType="action" text="Save" onClick={save} />
+          <Button buttonType="action" text="Save" onClick={save} isLoading={loading} />
           <Button
             buttonType={didError ? 'error' : 'success'}
             text="Submit"

@@ -1,28 +1,30 @@
 version: '3'
 services:
- db:
-    image: postgres:9.6.1-alpine
-    environment:
-      - POSTGRES_USER=app
-      - POSTGRES_PASSWORD=password123
-      - POSTGRES_DB=app_development
-  backend:
-    build: ./backend
-    command: rails s --binding=0.0.0.0
-    entrypoint: ./scripts/backend_entrypoint.sh
+  db:
+    image: postgres
+    env_file:
+      - .env
+  server:
+    build: ./server
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rake db:create && bundle exec rake db:migrate && bundle exec rake db:seed && rails s -p 3000 -b '0.0.0.0'"
+    env_file:
+      - .env
     links:
       - db
-      - frontend
+      - client
     volumes:
       - ./:/app
     depends_on:
       - db
-      - frontend
-  frontend:
-    build: ./frontend
-    command: npm start
-    entrypoint: ./scripts/frontend_entrypoint.sh
+      - client
+    ports:
+      - '3000:3000'
+  client:
+    build: ./client
+    env_file:
+      - .env
+    command: ["npm", "start"]
+    ports:
+      - "3001:3001"
     volumes:
       - ./client:/app
-    environment:
-      NODE_ENV: development

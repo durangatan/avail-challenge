@@ -5,11 +5,7 @@ import { AdminArguments, Admin } from '../../../../models';
 import { login } from '../../../../api';
 type AdminState = AdminArguments & CanError;
 
-export default function AdminLoginForm({
-  setSession
-}: {
-  setSession: React.Dispatch<React.SetStateAction<Admin | null>>;
-}) {
+export default function AdminLoginForm({ setSession }: { setSession: (admin: Admin | null) => void }) {
   const [admin, setAdmin] = useState<AdminState & CanError>({
     email: '',
     password: ''
@@ -29,6 +25,9 @@ export default function AdminLoginForm({
   return (
     <FormTag>
       <h2>Admin Login 🛠</h2>
+      <p>
+        Log in here to see the list of applicants who have submitted so far. You can also change some useful settings.
+      </p>
       <Input
         label="email:"
         name="email"

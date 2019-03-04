@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled, { ThemeProvider, createGlobalStyle } from 'styled-components';
-import ebcTheme from '../theme';
+import defaultTheme from '../theme';
 
 const GlobalStyles = createGlobalStyle`
     body {
@@ -39,7 +39,7 @@ const Container = styled.div`
   }
   table {
     text-align: center;
-    table-layout: auto;
+    table-layout: fixed;
   }
   th {
     font-size: ${({ theme }) => theme.font.size.h3};
@@ -60,7 +60,7 @@ type PageProps = {
 
 export default function Page({ children }: PageProps) {
   return (
-    <ThemeProvider theme={ebcTheme}>
+    <ThemeProvider theme={defaultTheme}>
       <React.Fragment>
         <GlobalStyles />
         <Container>{children}</Container>

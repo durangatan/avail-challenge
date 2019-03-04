@@ -29,7 +29,7 @@ const FormContainer = styled.section`
 
 type HomeScreenProps = {
   toggleModal: (modalShouldOpen: boolean, modalChildren: ReactNode) => void;
-  setSession: React.Dispatch<React.SetStateAction<Admin | null>>;
+  setSession: (admin: Admin | null) => void;
 } & RouteComponentProps;
 
 export default function Home(props: HomeScreenProps) {

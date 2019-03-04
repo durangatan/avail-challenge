@@ -9,3 +9,4 @@ gemfiles/*.lock
 **/node_modules
 client/build
 coverage/
+.env

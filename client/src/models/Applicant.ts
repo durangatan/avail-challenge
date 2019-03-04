@@ -114,3 +114,8 @@ export type ApplicantJSON = {
 export type WithApplicantId = {
   id: string;
 };
+
+export const ApplicantSortMap = {
+  landlordEmail: (a: Applicant, b: Applicant) => (a.landlord!.email >= b.landlord!.email ? -1 : 1),
+  landlordName: (a: Applicant, b: Applicant) => (a.landlord!.name >= b.landlord!.name ? -1 : 1)
+};
