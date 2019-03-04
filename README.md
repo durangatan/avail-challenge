@@ -6,6 +6,7 @@
 - Applicants can save their form and come back as many times as they like; however, if the "Full" form option is selected, social security numbers and mothers' maiden names will not be saved until the whole form is submitted.
 - Applicants can delete their application at any time.
 - Admins can see a flat list of all submitted applicants by logging in via the admin login form.
+- Login state is persisted in a cookie. You can log out from the admin screen.
 - Admins can toggle between the basic and full form type.
 - All update and destroy actions have authorization scoped to their own entity.
 
@@ -28,7 +29,7 @@
 create a .env file in the root directory of this repo and paste the following information, substituting your own values where necessary. Note that gmail addresses with 2FA enabled cannot be used as a `from` address, and that you may need to "enable less secure apps" in your gmail settings in order for the emails to actually send.
 
 ```
-API_URL=server:3000
+REACT_APP_API_URL=server:3000
 PORT=3001
 GMAIL_ADDRESS=<YOUR GMAIL ADDRESS>
 GMAIL_PASSWORD=<YOUR GMAIL PASSWORD>

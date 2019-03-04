@@ -10,7 +10,7 @@ import {
   LandlordJSON
 } from '../models';
 import { MissingIdError } from '../error';
-const API_URL = process.env.API_URL || `http://localhost:3000`;
+const API_URL = process.env.REACT_APP_API_URL || `http://localhost:3000`;
 
 const METHODS = {
   POST: 'POST',
