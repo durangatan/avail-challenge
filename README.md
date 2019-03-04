@@ -55,3 +55,10 @@ The seed file creates an admin user so you can peruse the site as an admin.
 ```
 
 I used trello to track my progress through the requirements of this challenge. you can find my trello board [here](https://trello.com/b/BgLcj4jn/avail-challenge) - it might give you a sense of the direction I would have headed if I had more time.
+
+
+## Troubleshooting
+- If the `docker-compose` command fails, you can run the client and server apps separately.
+- from `/client`: `npm install && npm start`
+- from `/server`: `bundle install && be rake db:create && be rake db:migrate && be rake db:seed && rails s`
+- you may need to install Bundler 2.0 if it is not in your path already.
